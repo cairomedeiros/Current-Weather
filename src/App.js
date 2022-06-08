@@ -1,16 +1,35 @@
 import api from './api/api';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 function App() {
 
   const [city, setCity] = useState('');
+  const [dt, setDt] = useState([])
+  
 
-  async function handleSubmit(e){
+  useEffect(() => {
+
+    
+  }, [])
+
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
+    async function submit(){
 
-    const response = await api.get(`/weather?q=${city}&appid=b8342943dabdefa84d2a44b07fde9d13`);
-    console.log(response)
-  }
+   
+
+    const response = await api.get(`/weather?q=${city}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric`);
+    const data = {
+      temperatura: response.data.main.temp_max,
+    }
+
+    setDt([...dt, data]);
+    setCity('');
+
+    }
+    submit();
+
+  }, [city, dt])
 
   function inputChange(e){
     setCity(e.target.value);
@@ -30,9 +49,18 @@ function App() {
           value={city}
           onChange={inputChange}
           />
-          <button>Search</button>
+          <button type="submit">Search</button>
 
         </form>
+
+        <ul>
+          {dt.map(dados => (
+            <li key={dados.temperatura}>
+              <span>{dados.temperatura}</span>
+            </li>
+          ))}
+        </ul>
+        
 
      </div>
     </div>
