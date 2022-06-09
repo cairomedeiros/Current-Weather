@@ -1,5 +1,5 @@
 import api from './api/api';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './style.css';
 
 
@@ -9,34 +9,38 @@ function App() {
   const [dt, setDt] = useState([])
   
 
-  useEffect(() => {
-
-    
-  }, [])
-
   const handleSubmit = useCallback((e) => {
     
     e.preventDefault();
     async function submit(){
+      if(!setDt === []){
+        setDt([]);
+      }
      
 
     const response = await api.get(`/weather?q=${city}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
-
-    const hasCidade = dt.find( cidade => cidade.idzada === city);
+        console.log(response)
+    const hasCidade = dt.find( cidade => cidade.id === city);
 
     if(hasCidade){
       throw new Error('Clima da cidade já está sendo mostrado!')
     }
 
     const data = {
-      idzada: response.data.sys.id,
+      id: response.data.sys.id,
+      nome: response.data.name,
+      pais: response.data.sys.country,
       temperatura: response.data.main.temp,
       tempmax: response.data.main.temp_max,
       tempmin: response.data.main.temp_min,
       weatherr: response.data.weather[0].description,
+      vento: response.data.wind.speed,
+      feel: response.data.main.feels_like,
+      humidade: response.data.main.feels_like,
+
     }
     
-    setDt([...dt, data]);
+    setDt([data]);
     setCity('');
 
     }
@@ -49,36 +53,39 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="geral">
      <div className="container">
-
-        <h1>Previsão do tempo</h1>
+        <div className="titulo">
+          <h1>Previsão do tempo</h1>
+          
+        </div>
 
         <div>
           {dt.map(dados => (
-            <div className="weatherReport" key={dados.idzada}>
-              <p>Niterói, RJ - BR</p>
-              <h1>20º Nublado</h1>
+            <div className="weatherReport" key={dados.id}>
+              <p>{dados.nome}, {dados.pais}</p>
+              <h1>{dados.temperatura}°C {dados.weatherr}</h1>
 
-              <div className="infos">
-                <h2>16°^25°</h2>
-                <h2>Sensação 19°c</h2>
-                <h2>Vento 18km/h</h2>
-                <h2>Humidade 89%</h2>
+              <div className="infos" key={dados.id}>
+                <p>{dados.tempmin}°</p>
+                <p>{dados.tempmax}°</p>
+                <p>{dados.vento}Km/h</p>
+                <h2>{dados.feel}°C</h2>
+                <h2>{dados.humidade}%</h2>
               </div>
             </div>
           ))}
         </div>
 
-        <form className="forms" onSubmit={handleSubmit}>
+        <form className="formulario" onSubmit={handleSubmit}>
 
           <input 
-          type="text" 
+          type="text-area" 
           placeholder="Insira aqui o nome da cidade"
           value={city}
           onChange={inputChange}
           />
-          <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button type="submit">search</button>
 
         </form>
 

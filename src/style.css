@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-.App{
+.geral{
     background-color: #ffa500;
     display: flex;
     width: 100%;
@@ -19,28 +19,33 @@
     width: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
     border-bottom: 1px solid #eee;
+    
 }
 
-.container h1{
-    font-size: 60px;
-    padding-bottom: 50px;
+.titulo{
+    font-size: 25px;
     color: white;
     
 }
 
-.forms{
-    margin-bottom: -40px;
-}
 
 input{
+    
     width: 400px;
     height: 40px;
     border: none;
-    text-decoration: none;
+    position: block;
+    
 }
+
+.formulario{
+    background-color: green;
+    margin-top: 100px;
+}
+
 
 button{
     height: 40px;
@@ -48,4 +53,13 @@ button{
     background-color: #eee;
     border: none;
     cursor: pointer;
+}
+
+.weatherReport{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    width: 440px;
+    height: 200px;
+    margin-bottom: -80px;
 }
