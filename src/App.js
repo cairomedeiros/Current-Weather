@@ -1,6 +1,7 @@
 import api from './api/api';
 import { useCallback, useEffect, useState } from 'react';
 import './style.css';
+import { Axios } from 'axios';
 
 
 function App() {
@@ -9,24 +10,65 @@ function App() {
   const [dt, setDt] = useState([]);
   const [capital, setCapital] = useState([]);
 
+
+
+  const capitalsName = [
+
+    {
+      name: "Rio de Janeiro",
+      id: 3451190
+    },
+    {
+      name: "São Paulo",
+      id: 3448439
+    },
+    {
+      name: "Belo Horizonte",
+      id: 3470127
+    },
+    {
+      name: "João Pessoa",
+      id: 3397277
+    },
+    {
+      name: "Brasília",
+      id: 3469058
+    },
+    {
+      name: "Belém",
+      id: 3405870
+    },
+    {
+      name: "Salvador",
+      id: 3450554
+    },
+    {
+      name: "Curitiba",
+      id: 6322752
+    },
+    {
+      name: "Fortaleza",
+      id: 6320062
+    },
+    {
+      name: "Manaus",
+      id: 3663517
+    }
+
+  ]
+
   useEffect(() => {
 
-    async function capitaiss(){
+   const getWeatherCapital = async () => {
 
-      const responses = await api.get(`/weather?q=${capital}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
-      const data = {
-      temperaturaC: responses.data.main.temp,
-      tempmaxC: responses.data.main.temp_max,
-      nomeCapital: responses.data.name,
-    }
+    const capitalIds = capitalsName.map(item => item.name);
+    const response = await api.get(`/weather?q=${capitalIds.join(", ")}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
+    console.log(response);
 
-    setCapital([data]);
-
-
-    }
-
-    capitaiss();
     
+   }
+    
+   getWeatherCapital();
 
 
   }, [])
@@ -43,7 +85,7 @@ function App() {
      
 
     const response = await api.get(`/weather?q=${city}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
-        console.log(response)
+        
     const hasCidade = dt.find( cidade => cidade.id === city);
 
     if(hasCidade){
