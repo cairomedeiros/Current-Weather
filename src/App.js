@@ -15,60 +15,56 @@ function App() {
   const capitalsName = [
 
     {
-      name: "Rio de Janeiro",
-      id: 3451190
+      name: "Rio de Janeiro"
     },
     {
-      name: "São Paulo",
-      id: 3448439
+      name: "São Paulo"
     },
     {
-      name: "Belo Horizonte",
-      id: 3470127
+      name: "Belo Horizonte"
     },
     {
-      name: "João Pessoa",
-      id: 3397277
+      name: "João Pessoa"
     },
     {
-      name: "Brasília",
-      id: 3469058
+      name: "Brasília"
     },
     {
-      name: "Belém",
-      id: 3405870
+      name: "Belém"
     },
     {
-      name: "Salvador",
-      id: 3450554
+      name: "Salvador"
     },
     {
-      name: "Curitiba",
-      id: 6322752
+      name: "Curitiba"
     },
     {
-      name: "Fortaleza",
-      id: 6320062
+      name: "Fortaleza"
     },
     {
-      name: "Manaus",
-      id: 3663517
+      name: "Manaus"
     }
 
   ]
 
   useEffect(() => {
 
-   const getWeatherCapital = async () => {
+   
 
-    const capitalIds = capitalsName.map(item => item.name);
-    const response = await api.get(`/weather?q=${capitalIds.join(", ")}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
-    console.log(response);
+    const capitalIds = capitalsName.map(async item => {
+      const responses = await api.get(`/weather?q=${item.name}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
+      return responses;
+    })
+    Promise.all(capitalIds)
+    .then((res) => setCapital(res))
+    .catch((err) => console.log(err))
+  
+
 
     
-   }
+   
     
-   getWeatherCapital();
+   
 
 
   }, [])
@@ -120,7 +116,7 @@ function App() {
 
   return (
     <div className="geral">
-     <div className="container">
+     <header className="container">
         <div className="titulo">
           <h1>Previsão do tempo</h1>
           
@@ -155,14 +151,15 @@ function App() {
 
         </form>
 
-        
-        
 
-     </div>
+     </header>
 
      <div className="capitais">
-
-     </div>
+            {capital.map( x => (
+              <li key={x.data.main.id}>{x.data.name} Máxima: {x.data.main.temp_max} Mínima: {x.data.main.temp_min}
+              </li>
+            ))}
+        </div>
 
 
     </div>
