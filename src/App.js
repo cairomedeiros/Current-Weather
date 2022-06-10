@@ -1,17 +1,41 @@
 import api from './api/api';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './style.css';
 
 
 function App() {
 
   const [city, setCity] = useState('');
-  const [dt, setDt] = useState([])
+  const [dt, setDt] = useState([]);
+  const [capital, setCapital] = useState([]);
+
+  useEffect(() => {
+
+    async function capitaiss(){
+
+      const responses = await api.get(`/weather?q=${capital}&appid=b8342943dabdefa84d2a44b07fde9d13&units=metric&lang=pt_br`);
+      const data = {
+      temperaturaC: responses.data.main.temp,
+      tempmaxC: responses.data.main.temp_max,
+      nomeCapital: responses.data.name,
+    }
+
+    setCapital([data]);
+
+
+    }
+
+    capitaiss();
+    
+
+
+  }, [])
   
 
   const handleSubmit = useCallback((e) => {
     
     e.preventDefault();
+
     async function submit(){
       if(!setDt === []){
         setDt([]);
