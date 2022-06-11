@@ -155,10 +155,32 @@ function App() {
      </header>
 
      <div className="capitais">
-            {capital.map( x => (
-              <li key={x.data.main.id}>{x.data.name} Máxima: {x.data.main.temp_max} Mínima: {x.data.main.temp_min}
+            
+          <div className="fiveFirst">
+            <header className="capitaisHeader"><strong>Capitais</strong></header>
+          <div className="minMax"><strong>Min Máx</strong></div>
+            {capital.slice([0], [5]).map( x => (
+              <>
+              
+              <li key={x.data.main.id}><strong>{Math.trunc(x.data.main.temp_min)}° {Math.trunc(x.data.main.temp_max)}° {x.data.name}</strong>
               </li>
+              </>
             ))}
+          </div>
+
+          <div className="fiveLast">
+            <header></header>
+          <div className="minMax"><strong>Min Máx</strong></div>
+            {capital.slice([5], [10]).map( x => (
+              <>
+              
+              <li key={x.data.main.id}><strong>{Math.trunc(x.data.main.temp_min)}° {Math.trunc(x.data.main.temp_max)}° {x.data.name}</strong>
+              </li>
+              </>
+            ))}
+          </div>
+
+            
         </div>
 
 
